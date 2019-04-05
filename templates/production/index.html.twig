@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réalisations{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 1fr;
+            grid-gap: 10px;
+            grid-auto-flow: dense;
+            list-style: none;
+            margin: 1em auto;
+            padding: 20px 0;
+        }
+        .wrapper::after {
+            display: none;
+        }
+        .wrapper li img {
+            display: block;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transition: .250s
+        }
+        .wrapper li img:hover{
+            opacity: 1;
+            transform: none;
+        }
+        .wrapper li {
+            position: relative;
+        }
+        .wrapper li .shade{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, .5);
+            transition: .3s;
+        }
+        .wrapper li .shade:hover{
+            background: rgba(0, 0, 0, .2);
+        }
+        .wrapper li h3{
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            z-index: 3;
+            text-align: center;
+        }
+    </style>
+
+
+
+    <div class="container">
+        {% if categories is empty %}
+            <p>Pas de réalisations</p>
+        {% endif %}
+
+        {% for category in categories %}
+            <h1>{{ category.name }}</h1>
+            <ul class="wrapper">
+                {% for production in category.productions  %}
+                <li>
+                    <a href="{{ path('production_show', {'title': production.name}) }}">
+                        {%  if production.pictures[0].name | length == 37 %}
+                        <img src="{{ production.pictures[0].name }}" height="350px" width="350px">
+                        {%  else %}
+                        <img src="{{ asset("images/" ~ production.pictures[0].name) }}" height="350px" width="350px">
+                        {%  endif %}
+                        <div class="shade">
+                            <h3>{{ production.name }}</h3>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+    </div>
+{% endblock %}

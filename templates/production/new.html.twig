@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formProduction 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <style>
+        label {
+            margin-top:20px;
+        }
+        .btn {
+            margin-top: 20px;
+        }
+    </style>
+
+    <section class="Production">
+
+        <div class="container">
+
+            {{ form_start(formProduction) }}
+
+            {{ form_label(formProduction.name, 'Nom') }}
+            {{ form_widget(formProduction.name) }}
+
+            {{ form_row(formProduction.description) }}
+
+            {#{{ form_row(formProduction.categories) }}#}
+            {#<p><a href="#" id="add_category" class="btn btn-primary">Ajouter une catégorie</a></p>#}
+
+            {{ form_row(formProduction.pictures) }}
+            <p><a href="#" id="add_picture" class="btn btn-primary">Ajouter une image</a></p>
+
+            <button class="btn btn-success" type="submit">
+                Ajouter l'élément
+            </button>
+
+            {{ form_end(formProduction) }}
+
+        </div>
+
+    </section>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    {#<script type="text/javascript">#}
+        {#$(document).ready(function() {#}
+            {#var $container = $('div#production_form_categories');#}
+            {#var index = $container.find(':input').length;#}
+
+            {#$('#add_category').click(function(e) {#}
+                {#addCategory($container);#}
+                {#e.preventDefault();#}
+                {#return false;#}
+            {#});#}
+
+            {#if (index == 0) {#}
+                {#addCategory($container);#}
+            {#} else {#}
+                {#$container.children('div').each(function() {#}
+                    {#addDeleteLink($(this));#}
+                {#});#}
+            {#}#}
+
+            {#// La fonction qui ajoute un formulaire CategoryType#}
+            {#function addCategory($container) {#}
+                {#// Dans le contenu de l'attribut « data-prototype », on remplace :#}
+                {#// - le texte "__name__label__" qu'il contient par le label du champ#}
+                {#// - le texte "__name__" qu'il contient par le numéro du champ#}
+                {#var template = $container.attr('data-prototype')#}
+                    {#.replace(/__name__label__/g, 'Catégorie n°' + (index+1))#}
+                    {#.replace(/__name__/g,        index)#}
+                {#;#}
+
+                {#var $prototype = $(template);#}
+
+                {#addDeleteLink($prototype);#}
+                {#$container.append($prototype);#}
+                {#index++;#}
+            {#}#}
+
+            {#// La fonction qui ajoute un lien de suppression d'une catégorie#}
+            {#function addDeleteLink($prototype) {#}
+                {#var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');#}
+
+                {#$prototype.append($deleteLink);#}
+                {#$deleteLink.click(function(e) {#}
+                    {#$prototype.remove();#}
+
+                    {#e.preventDefault();#}
+                    {#return false;#}
+                {#});#}
+            {#}#}
+        {#});#}
+    {#</script>#}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $container = $('div#production_form_pictures');
+            var index = $container.find(':input').length;
+
+            $('#add_picture').click(function(e) {
+                addPicture($container);
+                e.preventDefault();
+                return false;
+            });
+
+            if (index == 0) {
+                addPicture($container);
+            } else {
+                $container.children('div').each(function() {
+                    addDeleteLink($(this));
+                });
+            }
+
+            // La fonction qui ajoute un formulaire CategoryType
+            function addPicture($container) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+                var template = $container.attr('data-prototype')
+                    .replace(/__name__label__/g, 'Image n°' + (index+1))
+                    .replace(/__name__/g,        index)
+                ;
+
+                var $prototype = $(template);
+
+                addDeleteLink($prototype);
+                $container.append($prototype);
+                index++;
+            }
+
+            // La fonction qui ajoute un lien de suppression d'une catégorie
+            function addDeleteLink($prototype) {
+                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+                $prototype.append($deleteLink);
+                $deleteLink.click(function(e) {
+                    $prototype.remove();
+
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        });
+    </script>
+
+{% endblock %}

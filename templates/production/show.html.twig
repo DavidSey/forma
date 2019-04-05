@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ production.name }}{% endblock %}
+
+{% form_theme formComment 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 1fr;
+            grid-gap: 10px;
+            grid-auto-flow: dense;
+            list-style: none;
+            margin: 1em auto;
+            padding: 20px 0;
+        }
+        .wrapper::after {
+            display: none;
+        }
+        .wrapper li img {
+            display: block;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transition: .250s
+        }
+        .wrapper li img:hover{
+            opacity: 1;
+            transform: none;
+        }
+        .wrapper li {
+            position: relative;
+        }
+        .wrapper li .shade{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, .5);
+            transition: .3s;
+        }
+        .wrapper li .shade:hover{
+            background: rgba(0, 0, 0, .2);
+        }
+        .wrapper li h3{
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            z-index: 3;
+            text-align: center;
+        }
+    </style>
+
+
+
+    <div class="container">
+        <h1>{{ production.name }}</h1>
+
+        <p>{{ production.description }}</p>
+
+        <ul class="wrapper">
+            {% for picture in production.pictures  %}
+                <li>
+                    {%  if picture.name| length == 37 %}
+                        <img src="{{ picture.name }}" height="350px" width="350px">
+                    {%  else %}
+                        <img src="{{ asset("images/" ~ picture.name) }}" height="350px" width="350px">
+                    {%  endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Commentaires</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Auteur</th>
+                <th>Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comment in production.comments %}
+                <tr>
+                    {% if comment.author is empty %}
+                        <td>Annonyme</td>
+                    {% else %}
+                        <td>{{ comment.author }}</td>
+                    {% endif %}
+                    {#todo: xss#}
+                    <td>{{ comment.content|raw }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>1</td>
+                <td>Anna</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Debbie</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>John</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="comment">
+            {{ form_start(formComment) }}
+            {{ form_widget(formComment) }}
+            <button class="btn btn-success" type="submit">
+                Ajouter l'élément
+            </button>
+            {{ form_end(formComment) }}
+        </div>
+    </div>
+{% endblock %}
